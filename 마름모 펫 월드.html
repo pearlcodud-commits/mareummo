@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>💎 마름모 펫 월드</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Jua','Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#3b2a6b;background:linear-gradient(135deg,#ffd6f0,#d6e4ff 50%,#d8fff0);user-select:none;-webkit-user-select:none}
+.stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(3px 3px at 70% 20%,#fff,transparent),radial-gradient(2px 2px at 40% 80%,#fff,transparent),radial-gradient(3px 3px at 85% 65%,#fff,transparent);animation:tw 2s infinite alternate}
+@keyframes tw{from{opacity:.2}to{opacity:1}}
+#app{position:relative;max-width:760px;margin:0 auto;padding:12px}
+.top{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:22px;padding:18px 14px 8px;box-shadow:0 6px 0 #c9b8ff;gap:8px}
+.coin{font-size:22px;background:linear-gradient(#fff3a0,#ffd24a);padding:6px 14px;border-radius:99px;box-shadow:0 3px 0 #d9a400}
+.title{font-size:20px;flex:1;text-align:center}
+nav{display:flex;gap:6px;margin:10px 0}
+nav button{flex:1;font:inherit;font-size:16px;padding:10px 2px;border:0;border-radius:16px;background:#fff;color:#6b4bd6;box-shadow:0 4px 0 #c9b8ff;cursor:pointer}
+nav button.on{background:linear-gradient(#a58bff,#7a55ff);color:#fff;box-shadow:0 4px 0 #4b2fb8}
+.card{background:#fff;border-radius:26px;padding:16px;box-shadow:0 8px 0 #c9b8ff;position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;top:-40%;left:-60%;width:40%;height:180%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);transform:rotate(20deg);animation:shine 4s infinite;pointer-events:none}
+@keyframes shine{to{left:130%}}
+h2{margin:0 0 6px;font-size:22px;font-weight:400}
+.qtag{display:inline-block;background:#ff5fa8;color:#fff;border-radius:99px;padding:3px 12px;font-size:14px;margin-bottom:6px}
+.big{font-size:20px;line-height:1.5;margin:6px 0 10px}
+svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.btn{font:inherit;font-size:19px;padding:11px 20px;border:0;border-radius:18px;color:#fff;background:linear-gradient(#ff8fc4,#ff4fa0);box-shadow:0 5px 0 #b82d74;cursor:pointer;margin:5px 3px}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #b82d74}
+.btn.g{background:linear-gradient(#6fe3a8,#22b873);box-shadow:0 5px 0 #138a52}
+.btn.y{background:linear-gradient(#ffe36b,#ffb800);box-shadow:0 5px 0 #c98a00;color:#5a3b00}
+.btn.gray{background:#d9d3ec;box-shadow:0 5px 0 #aaa0cc;color:#5b4d8a}
+.btn.s{font-size:15px;padding:6px 12px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.opt{font:inherit;font-size:23px;padding:14px;border:0;border-radius:18px;background:#f1ecff;color:#4b2fb8;box-shadow:0 5px 0 #c9b8ff;cursor:pointer}
+.opt.bad{background:#ffd0d6;color:#c0203a;box-shadow:0 5px 0 #e59aa6;animation:shake .4s}
+.opt.good{background:#b9f5d2;color:#0d7a45;box-shadow:0 5px 0 #7fd3a6}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shape{cursor:pointer}
+.shape polygon{fill:#e9dcff;stroke:#6b4bd6;stroke-width:2.5}
+.shape.sel polygon{fill:#ffe3f1;stroke:#ff3d95;stroke-width:3}
+.ring{opacity:0;fill:none;stroke:#ff3d95;stroke-width:3;stroke-dasharray:6 4}
+.sel .ring{opacity:1}
+.shape text{font-size:15px;fill:#3b2a6b}
+.dot{fill:#ff7a45;cursor:pointer}.dot.on{fill:#ff2d6f}
+.msg{min-height:28px;font-size:18px;margin:6px 0;text-align:center}
+.exp{background:#eaf6ff;border-radius:14px;padding:10px 12px;margin:8px 0;font-size:17px}
+.hint{background:#fff6b8;border-radius:14px;padding:0 12px;font-size:17px}
+.hint:not(:empty){padding:8px 12px;margin-top:6px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.item{background:#f7f3ff;border-radius:20px;padding:10px 4px;text-align:center;box-shadow:0 4px 0 #d9ccff}
+.item .em{font-size:42px}
+.item small{display:block;color:#7a6aa8;font-size:13px}
+.rare{color:#fff;border-radius:99px;padding:1px 9px;font-size:12px}
+.r0{background:#9aa5b8}.r1{background:#3b8bff}.r2{background:linear-gradient(90deg,#ff5fa8,#ffb800)}
+.egg{font-size:100px;text-align:center;animation:egg .5s infinite}
+@keyframes egg{25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+.reveal{font-size:110px;text-align:center;animation:pop .6s}
+@keyframes pop{0%{transform:scale(0) rotate(-90deg)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+.conf{position:fixed;top:-30px;z-index:50;pointer-events:none;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:.6}}
+.center{text-align:center}
+.eq{display:inline-block;background:#fff6b8;border-radius:12px;padding:2px 10px}
+.pet{position:relative;display:inline-block;line-height:1}
+.pet i{position:absolute;font-style:normal;left:50%;transform:translateX(-50%)}
+.pet .ph{top:-.42em;font-size:.55em}.pet .pf{top:.28em;font-size:.5em}.pet .pp{left:auto;right:-.45em;transform:none;bottom:.05em;font-size:.5em}
+.petbox{background:linear-gradient(#fff,#f0e8ff);border-radius:24px;padding:30px 0 12px;text-align:center;min-height:200px}
+.bar{height:16px;background:#e6dcff;border-radius:99px;overflow:hidden;margin:6px 20px}
+.bar div{height:100%;background:linear-gradient(90deg,#ff8fc4,#ffb800);transition:width .5s}
+.chip{display:inline-block;font:inherit;font-size:19px;border:0;border-radius:12px;padding:3px 12px;margin:0 3px;background:#f1ecff;color:#4b2fb8;box-shadow:0 3px 0 #c9b8ff;cursor:pointer}
+.chip.on{background:#ffd9ec;color:#c4177a}.chip.ok{background:#b9f5d2;color:#0d7a45}
+.sent{font-size:19px;line-height:2.1;margin:4px 0}
+.bounce{animation:pop .5s}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div id="app">
+  <div class="top"><div id="hero"></div><div class="title">💎 마름모 펫 월드</div><div class="coin">🪙 <span id="coin">0</span></div></div>
+  <nav id="nav"></nav>
+  <div id="main"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const CH=[["🐶","멍멍이",0],["🐱","냐옹이",0],["🐰","토순이",0],["🐥","삐약이",0],["🐸","개굴이",0],["🦊","여우",1],["🐼","판다",1],["🐯","호랑이",1],["🐨","코알라",1],["🦄","유니콘",2],["🐲","용용이",2],["👽","외계인",2]];
+const FOOD=[["🍎","사과",10,1],["🍙","주먹밥",15,2],["🍔","햄버거",25,4],["🍰","케이크",35,6],["🍖","고기",50,10]];
+const CLOTH=[["head","👑","왕관",80],["head","🎩","모자",50],["head","🧢","야구모자",40],["head","🎀","리본",30],["face","🕶️","선글라스",40],["face","👓","안경",30],["hand","🎈","풍선",20],["hand","🍭","막대사탕",30],["hand","🪄","요술봉",50]];
+const STAGE=[[0,"아기"],[5,"꼬마"],[15,"어린이"],[30,"청소년"],[60,"어른"],[100,"전설"]];
+let S={coin:0,own:{"🐥":1},hero:"🐥",xp:{},food:{},cloth:[],wear:{},streak:0,solved:0,tab:"quiz"};
+try{Object.assign(S,JSON.parse(localStorage.getItem("rhb2")||"{}"))}catch(e){}
+function save(){try{localStorage.setItem("rhb2",JSON.stringify(S))}catch(e){}}
+const rnd=n=>Math.floor(Math.random()*n);
+const shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const pick=a=>a[rnd(a.length)];
+const xp=()=>S.xp[S.hero]||0;
+function petHTML(px){const w=S.wear;return `<span class="pet" style="font-size:${px}px"><i class="ph">${w.head||""}</i>${S.hero}<i class="pf">${w.face||""}</i><i class="pp">${w.hand||""}</i></span>`}
+function head(){$("#coin").textContent=S.coin;$("#hero").innerHTML=petHTML(34)}
+function nav(){
+  const T=[["quiz","📝 문제"],["gacha","🎁 캐릭터깡"],["shop","🏪 상점"],["pet","🐾 내 캐릭터"]];
+  $("#nav").innerHTML=T.map(t=>`<button class="${S.tab==t[0]?"on":""}" onclick="go('${t[0]}')">${t[1]}</button>`).join("");
+}
+function go(t){S.tab=t;save();nav();head();({quiz:quiz,gacha:gacha,shop:shop,pet:pet})[t]()}
+function confetti(n=40,list=["✨","💎","⭐","🎉","💖","🔷"]){
+  for(let i=0;i<n;i++){const e=document.createElement("div");e.className="conf";e.textContent=pick(list);e.style.left=rnd(100)+"vw";e.style.fontSize=(16+rnd(22))+"px";e.style.animationDelay=Math.random()*.5+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+}
+function reward(first,bonus=0){
+  let g=10+bonus;if(first){S.streak++;if(S.streak>=3)g+=5}else{S.streak=0;g=5+bonus}
+  S.coin+=g;S.solved++;save();head();confetti(first?45:20);return g;
+}
+function win(first,exp,bonus){
+  const g=reward(first,bonus);
+  $("#fb").innerHTML=`<div class="exp">📘 <b>풀이</b> ${exp}</div><div class="center"><div class="msg">${pick(["정답이에요! 🎉","대단해요! ⭐","마름모 박사! 💎","완벽해요! ✨"])} <b>+${g}🪙</b>${S.streak>=3?` · 🔥 ${S.streak}연속 보너스!`:""}</div><button class="btn g" onclick="quiz()">다음 문제 ▶</button></div>`;
+}
+function lose(tries,exp,msg){
+  S.streak=0;$("#fb").innerHTML=`<div class="msg">${msg||"앗! 다시 생각해 봐요 🤔"}</div>`+(tries>=2?`<div class="exp">📘 <b>풀이</b> ${exp}</div>`:"");
+}
+let HINT="";
+function shell(tag,title,body,hint){
+  HINT=hint;
+  $("#main").innerHTML=`<div class="card"><span class="qtag">${tag}</span><div class="big">${title}</div>${body}<div class="center"><button class="btn y s" onclick="$('#hn').innerHTML='💡 '+HINT">💡 힌트 보기</button></div><div id="hn" class="hint"></div><div id="fb"></div></div>`;
+}
+
+/* ---------- data ---------- */
+const RH={sq:"50,5 95,50 50,95 5,50",up:"15,15 85,15 85,85 15,85",tall:"50,3 80,50 50,97 20,50",wide:"3,50 50,22 97,50 50,78",fat:"50,10 90,50 50,90 10,50"};
+const NR={rect:"8,25 92,25 92,75 8,75",para:"25,25 98,25 75,75 2,75",trap:"30,25 70,25 95,75 5,75",kite:"50,3 85,40 50,97 15,40",para2:"2,75 75,75 98,25 25,25"};
+function quiz(){
+  S.tab="quiz";nav();head();
+  ({pick:qPick,choice:qChoice,ox:qOX,draw:qDraw,count:qCount,diag:qDiag,comp:qComp,fold:qFold,blank:qBlank})[pick(["pick","choice","choice","diag","count","ox","ox","draw","comp","comp","fold","blank","blank"])]();
+}
+
+/* ---------- 4지선다 ---------- */
+function optsQ(tag,title,svg,ans,list,hint,exp){
+  let tries=0,done=false;
+  list=[...new Set(list.map(String))];let k=1;while(list.length<4)list.push(String(+ans+(k++)*3));
+  shell(tag,title,svg+`<div class="opts">`+shuf(list).map(v=>`<button class="opt" data-v="${v}">${v}</button>`).join("")+`</div>`,hint);
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(done)return;
+    if(b.dataset.v==String(ans)){done=true;b.classList.add("good");win(tries==0,exp)}
+    else{tries++;b.classList.add("bad");b.disabled=true;lose(tries,exp)}
+  });
+}
+function qChoice(){
+  const k=rnd(5),x=2+rnd(9),a=[50,60,70,110,120,130,140][rnd(7)];
+  const rh=(l1,l2)=>`<svg viewBox="0 0 300 130" width="300"><polygon points="150,8 280,65 150,122 20,65" fill="#ffe3f1" stroke="#ff3d95" stroke-width="3"/><text x="52" y="30" font-size="20" fill="#3b2a6b">${l1}</text><text x="125" y="110" font-size="20" fill="#3b2a6b">${l2}</text></svg>`;
+  const Q=[
+   [`한 변이 <span class="eq">${x} cm</span>인 마름모예요. <b>마주 보는 변</b>의 길이는 몇 cm?`,x,[x,x+2,x-1,x*2],"마름모는 네 변의 길이가 모두 같아요.",`네 변의 길이가 모두 같으니 마주 보는 변도 ${x}cm예요.`,rh(x+"cm","?cm")],
+   [`마름모의 한 각이 <span class="eq">${a}°</span>예요. <b>마주 보는 각</b>의 크기는?`,a+"°",[a+"°",(180-a)+"°","90°",(a+10)+"°"],"접었을 때 딱 겹쳐서 마주 보는 각은 크기가 같았어요!",`마름모는 마주 보는 두 각의 크기가 같아요. 그래서 ${a}°예요.`,rh(a+"°","?")],
+   [`한 변이 <span class="eq">${x} cm</span>인 마름모예요. <b>네 변의 길이의 합</b>은 몇 cm?`,x*4,[x*4,x*2,x*3,x+4],"네 변의 길이는 모두 같으니까 한 변을 몇 번 더할까요?",`${x}+${x}+${x}+${x}=${x*4}(cm)예요.`,""],
+   [`마름모의 두 대각선은 어떻게 만날까요?`,"수직으로 만나요",["수직으로 만나요","평행하게 만나요","45°로 만나요","만나지 않아요"],"종이를 접었을 때 생긴 모서리 모양(ㄴ)을 떠올려 봐요.","마주 보는 꼭짓점끼리 이은 두 선분은 수직으로 만나요(90°).",""],
+   [`마름모의 대각선은 서로를 어떻게 나눌까요?`,"이등분해요",["이등분해요","3등분해요","나누지 않아요","한쪽만 나눠요"],"접었을 때 한쪽이 다른 쪽과 딱 겹쳤어요. 길이가 어땠을까요?","두 대각선은 서로를 똑같이 둘로 나눠요. 이것을 이등분이라고 해요.",""]];
+  const q=Q[k];optsQ("🧩 성질 퀴즈",q[0],q[5],q[1],q[2],q[3],q[4]);
+}
+function qDiag(){
+  const p=2+rnd(5),q=2+rnd(5),k=rnd(3);
+  const Q=[[`마름모의 대각선 하나가 <span class="eq">${p*2} cm</span>예요. 두 대각선이 만나는 점에서 이 대각선은 한쪽이 몇 cm?`,p,[p,p*2,p+2,p*4],"이등분은 똑같이 둘로 나누는 거예요.",`${p*2}÷2=${p}(cm)예요.`],
+   [`두 대각선이 만나서 생기는 각은 몇 도일까요?`,"90°",["90°","60°","45°","180°"],"수직은 몇 도로 만나는 걸까요? (삼각자의 직각!)","마름모의 두 대각선은 수직으로 만나므로 90°예요."],
+   [`한 대각선이 <span class="eq">${p*2} cm</span>, 다른 대각선이 <span class="eq">${q*2} cm</span>예요. ${p*2}cm 대각선은 만난 점에서 한쪽이 몇 cm?`,p,[p,q,p*2,p+q],"길이를 물어보는 대각선을 이등분해 보세요.",`${p*2}cm 대각선은 이등분되니까 ${p*2}÷2=${p}(cm)예요.`]][k];
+  const svg=`<svg viewBox="0 0 220 220" width="200"><polygon points="110,6 205,110 110,214 15,110" fill="#e7f6ff" stroke="#3b8bff" stroke-width="3"/><line x1="110" y1="6" x2="110" y2="214" stroke="#ff3d95" stroke-width="2.5" stroke-dasharray="7 5"/><line x1="15" y1="110" x2="205" y2="110" stroke="#ff3d95" stroke-width="2.5" stroke-dasharray="7 5"/><path d="M110 92 H128 V110" fill="none" stroke="#ff3d95" stroke-width="2.5"/></svg>`;
+  optsQ("📐 대각선 퀴즈",Q[0],svg,Q[1],Q[2],Q[3],Q[4]);
+}
+function qCount(){
+  const n=3+rnd(5);let s="";
+  for(let i=0;i<n;i++){const x=i*30+10;s+=i%2==0?`<polygon points="${x},62 ${x+60},62 ${x+30},10" fill="#8bd48b" stroke="#2e6b2e" stroke-width="2"/>`:`<polygon points="${x},10 ${x+60},10 ${x+30},62" fill="#8bd48b" stroke="#2e6b2e" stroke-width="2"/>`}
+  const w=30*(n+1)+20;
+  optsQ("🔺 도형 탐험",`정삼각형 모양 조각 <b>${n}개</b>를 겹치지 않게 이어 붙였어요. 찾을 수 있는 <b>마름모</b>는 모두 몇 개일까요?`,`<svg viewBox="0 0 ${w} 72" width="${Math.min(w*1.8,380)}">${s}</svg>`,n-1,[n-1,n,n-2,n+1],"정삼각형 2개를 붙이면 마름모 1개가 돼요. 이웃한 두 조각을 짝지어 보세요.",`이웃한 두 조각의 짝이 ${n-1}쌍이라서 마름모는 ${n-1}개예요.`);
+}
+/* ---------- OX ---------- */
+function qOX(){
+  const Q=[["네 변의 길이가 모두 같은 사각형을 마름모라고 해요.",1,"이것이 마름모의 정의예요."],["마름모는 마주 보는 두 각의 크기가 같아요.",1,"접으면 마주 보는 각이 딱 겹쳐요."],["마름모의 두 대각선은 서로 수직으로 만나요.",1,"대각선은 90°로 만나요."],["마름모의 두 대각선의 길이는 항상 같아요.",0,"마름모의 대각선은 길이가 다를 수 있어요(정사각형만 같아요)."],["정사각형은 마름모라고 할 수 있어요.",1,"정사각형도 네 변의 길이가 모두 같으니까 마름모예요."],["직사각형은 마름모예요.",0,"직사각형은 네 변의 길이가 모두 같지는 않아요."],["마름모의 대각선은 서로를 이등분해요.",1,"각각 똑같이 둘로 나눠요."],["마름모는 마주 보는 변의 길이가 달라요.",0,"네 변이 모두 같으니 마주 보는 변도 같아요."],["평행사변형은 모두 마름모예요.",0,"평행사변형은 네 변이 모두 같다고 할 수 없어요."]];
+  const q=pick(Q);let done=false,tries=0;
+  shell("⭕❌ OX 퀴즈",q[0],`<div class="opts"><button class="opt" data-v="1" style="font-size:44px">⭕</button><button class="opt" data-v="0" style="font-size:44px">❌</button></div>`,"마름모의 정의(네 변의 길이가 모두 같다)와 성질을 떠올려 봐요.");
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(done)return;
+    if(+b.dataset.v==q[1]){done=true;b.classList.add("good");win(tries==0,q[2])}
+    else{tries++;b.classList.add("bad");b.disabled=true;lose(tries,q[2],"다시 생각해 봐요! 🤔")}});
+}
+/* ---------- 동그라미 ---------- */
+function qPick(){
+  const r=shuf(Object.values(RH)).slice(0,3),n=shuf(Object.values(NR)).slice(0,3);
+  const all=shuf([...r.map(p=>[p,1]),...n.map(p=>[p,0])]),names="가나다라마바",sel=new Set();
+  let svg=`<svg viewBox="0 0 330 230" width="400">`;
+  all.forEach((s,i)=>{svg+=`<g class="shape" data-i="${i}" transform="translate(${(i%3)*110},${Math.floor(i/3)*115}) scale(.95)"><polygon points="${s[0]}"/><rect class="ring" x="0" y="0" width="100" height="100" rx="12"/><text x="42" y="55">${names[i]}</text></g>`});
+  shell("⭕ 동그라미 치기","<b>마름모</b>를 모두 찾아 눌러서 동그라미 쳐 보세요!",svg+`</svg><div class="center"><button class="btn" id="ck">확인 ✔</button></div>`,"네 변의 길이가 모두 같은 사각형이에요. 정사각형도 마름모예요!");
+  document.querySelectorAll(".shape").forEach(g=>g.onclick=()=>{const i=+g.dataset.i;sel.has(i)?(sel.delete(i),g.classList.remove("sel")):(sel.add(i),g.classList.add("sel"))});
+  let tries=0,done=false;const ans=all.map((s,i)=>s[1]?names[i]:"").filter(Boolean).join(", ");
+  $("#ck").onclick=()=>{if(done)return;
+    if(all.every((s,i)=>!!s[1]==sel.has(i))){done=true;win(tries==0,`네 변의 길이가 모두 같은 도형은 ${ans}이에요.`)}
+    else{tries++;lose(tries,`네 변의 길이가 모두 같은 도형은 ${ans}이에요.`,"조금 달라요! 네 변의 길이를 다시 살펴봐요 🔍")}};
+}
+/* ---------- 도형판 ---------- */
+function board(cols,rows,sp,given){
+  let s=`<svg id="bd" viewBox="0 0 ${cols*sp} ${rows*sp}" width="${Math.min(cols*sp,520)}"><rect width="${cols*sp}" height="${rows*sp}" rx="20" fill="#fff4c7"/><polygon id="pg" fill="rgba(255,61,149,.15)" stroke="#ff2d6f" stroke-width="3"/>${given||""}`;
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++)s+=`<circle class="dot" data-x="${i}" data-y="${j}" cx="${sp/2+i*sp}" cy="${sp/2+j*sp}" r="${sp/6}"/>`;
+  return s+"</svg>";
+}
+const pxy=(p,sp)=>`${sp/2+p[0]*sp},${sp/2+p[1]*sp}`;
+function qDraw(){
+  const P=[],sp=60;
+  shell("✏️ 도형판 그리기","점을 <b>4개</b> 눌러서 <b>마름모</b>를 그려 보세요! (네 변의 길이가 모두 같아야 해요)",board(5,5,sp)+`<div class="center"><button class="btn gray" id="cl">지우기</button><button class="btn" id="ck">확인 ✔</button></div>`,"위·아래 점은 같은 세로줄, 왼쪽·오른쪽 점은 같은 가로줄에서 가운데 점을 정해 보세요. 예: 교과서의 길쭉한 마름모!");
+  const upd=()=>{$("#pg").setAttribute("points",P.map(p=>pxy(p,sp)).join(" "));document.querySelectorAll(".dot").forEach(d=>d.classList.toggle("on",P.some(p=>p[0]==+d.dataset.x&&p[1]==+d.dataset.y)))};
+  document.querySelectorAll(".dot").forEach(d=>d.onclick=()=>{const p=[+d.dataset.x,+d.dataset.y];if(P.length>=4||P.some(q=>q[0]==p[0]&&q[1]==p[1]))return;P.push(p);upd()});
+  $("#cl").onclick=()=>{P.length=0;upd();$("#fb").innerHTML=""};
+  let tries=0,done=false;const EX="마주 보는 꼭짓점끼리 이은 두 선분이 서로 이등분되고, 이웃한 두 변의 길이가 같으면 마름모예요.";
+  $("#ck").onclick=()=>{if(done)return;
+    if(P.length<4){$("#fb").innerHTML=`<div class="msg">점을 4개 눌러 주세요 👆</div>`;return}
+    const d=(a,b)=>(a[0]-b[0])**2+(a[1]-b[1])**2;let ok=null;
+    for(const o of [[0,1,2,3],[0,1,3,2],[0,2,1,3]]){const [a,b,c,e]=o.map(i=>P[i]);
+      if((b[0]-a[0])*(c[1]-b[1])-(b[1]-a[1])*(c[0]-b[0])!=0&&a[0]+c[0]==b[0]+e[0]&&a[1]+c[1]==b[1]+e[1]&&d(a,b)==d(b,c)){ok=o;break}}
+    if(ok){done=true;$("#pg").setAttribute("points",ok.map(i=>pxy(P[i],sp)).join(" "));win(tries==0,EX)}
+    else{tries++;lose(tries,EX,"네 변의 길이가 같지 않아요. 지우고 다시! 💪")}};
+}
+function qComp(){
+  const sp=40;let A,B,C,D,t=0;
+  while(t++<200){const type=rnd(2),a=1+rnd(3),b=1+rnd(3),sx=rnd(2)?1:-1,sy=rnd(2)?1:-1;
+    let u,v;if(type==0){u=[sx*a,-b];v=[sx*a,b]}else{if(a==b)continue;u=[sx*a,sy*b];v=[sx*b,sy*a]}
+    const bx=rnd(10),by=rnd(6);B=[bx,by];A=[bx+u[0],by+u[1]];C=[bx+v[0],by+v[1]];D=[bx+u[0]+v[0],by+u[1]+v[1]];
+    if([A,C,D].every(p=>p[0]>=0&&p[0]<10&&p[1]>=0&&p[1]<6)&&u[0]*v[1]-u[1]*v[0]!=0)break}
+  const given=`<polyline points="${pxy(A,sp)} ${pxy(B,sp)} ${pxy(C,sp)}" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/>`;
+  shell("🧩 선분 완성하기","주어진 선분을 변으로 하는 <b>마름모</b>를 완성해 보세요! 나머지 꼭짓점 <b>한 점</b>을 눌러요.",board(10,6,sp,given),"두 선분의 길이가 같아요. B에서 A로 간 만큼, C에서 같은 방향으로 가 보세요.");
+  let tries=0,done=false;const EX="B에서 A로 간 만큼 C에서 같은 방향으로 가면 네 번째 꼭짓점이 돼요. 마주 보는 변은 길이가 같고 평행해요.";
+  document.querySelectorAll(".dot").forEach(d=>d.onclick=()=>{if(done)return;const x=+d.dataset.x,y=+d.dataset.y;
+    if(x==D[0]&&y==D[1]){done=true;d.classList.add("on");$("#pg").setAttribute("points",[A,B,C,D].map(p=>pxy(p,sp)).join(" "));win(tries==0,EX)}
+    else{tries++;lose(tries,EX,"그 점은 아니에요. 네 변의 길이가 모두 같아지는 점을 찾아봐요! 🔍")}});
+}
+/* ---------- 빈칸 고르기 ---------- */
+function qBlank(){
+  const B=[["마주 보는 두 각의 크기는 ","같습니다","다릅니다"," ."],["마주 보는 꼭짓점끼리 이은 두 선분은 ","수직","평행","(으)로 만나요."],["마주 보는 꼭짓점끼리 이은 두 선분은 서로를 ","이등분","삼등분","합니다."],["마름모는 네 변의 길이가 모두 ","같습니다","다릅니다"," ."],["마주 보는 변의 길이는 ","같습니다","다릅니다"," ."]];
+  const qs=shuf(B).slice(0,3),sel=[];
+  let h=qs.map((q,i)=>{const o=shuf([q[1],q[2]]);return `<div class="sent">${i+1}. ${q[0].replace(/ \.$/,"")} ( ${o.map(w=>`<button class="chip" data-i="${i}" data-w="${w}">${w}</button>`).join(" / ")} )${q[3].trim()==="."?".":q[3]}</div>`}).join("");
+  shell("✍️ 빈칸 고르기","마름모의 <b>성질</b>을 완성해 보세요! 알맞은 말을 눌러요.",h+`<div class="center"><button class="btn" id="ck">확인 ✔</button></div>`,"종이접기에서 확인한 것을 떠올려 봐요. 접으면 딱 겹쳤고, 모서리는 ㄴ 모양이었어요.");
+  document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{const i=c.dataset.i;sel[i]=c.dataset.w;document.querySelectorAll(`.chip[data-i="${i}"]`).forEach(x=>x.classList.toggle("on",x==c))});
+  let tries=0,done=false;const EX=qs.map(q=>q[0].trim()+" "+q[1]+" "+q[3].trim()).join(" / ");
+  $("#ck").onclick=()=>{if(done)return;
+    if(qs.some((q,i)=>!sel[i])){$("#fb").innerHTML=`<div class="msg">모든 빈칸을 골라 주세요 👆</div>`;return}
+    if(qs.every((q,i)=>sel[i]==q[1])){done=true;document.querySelectorAll(".chip.on").forEach(x=>x.classList.replace("on","ok"));win(tries==0,EX)}
+    else{tries++;lose(tries,EX,"틀린 곳이 있어요. 다시 골라 봐요! 🤔")}};
+}
+/* ---------- 종이접기 ---------- */
+function qFold(){
+  const a=75+rnd(30),b=40+rnd(25),cx=150,cy=110;
+  const T=[cx,cy-b],R=[cx+a,cy],Bm=[cx,cy+b],L=[cx-a,cy],C=[cx,cy];
+  const V=[T,R,Bm,L],col=["#ffb347","#ff8fa3","#8fd3ff","#b8f08f"];
+  const sx=[1,1,1,1],sy=[1,1,1,1];let tries=0,step=0,f1=0,f2=0;
+  const tr=i=>`translate(${cx},${cy}) scale(${sx[i]},${sy[i]}) translate(${-cx},${-cy})`;
+  const quads=[[C,T,R],[C,R,Bm],[C,Bm,L],[C,L,T]];
+  const anim=(idx,arr)=>{let t0=null;const f=ts=>{t0=t0||ts;const p=Math.min((ts-t0)/700,1),v=1-2*p;idx.forEach(i=>{arr[i]=v;$("#q"+i).setAttribute("transform",tr(i))});if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+  const draw=()=>{shell("✂️ 종이접기 실험실","마름모 종이를 <b>점선을 따라 2번</b> 접어 보고, 알게 된 점을 표시해 봐요!",`<div id="fs"></div>`,"버튼을 눌러 접어 보세요. 접으면 어떤 부분이 딱 겹치는지 잘 보세요!");stage(0)};
+  const EX="마름모는 접으면 딱 겹쳐요. 마주 보는 각의 크기가 같고, 네 변의 길이가 모두 같으며, 대각선은 수직으로 만나 서로를 이등분해요.";
+  const fail=m=>{tries++;lose(tries,EX,m)};
+  function stage(n){
+    step=n;const fs=$("#fs");
+    if(n==0){
+      fs.innerHTML=`<svg viewBox="0 0 300 220" width="330">${quads.map((q,i)=>`<polygon id="q${i}" points="${q.map(p=>p.join(",")).join(" ")}" fill="${col[i]}" fill-opacity=".8" stroke="#fff" stroke-width="1"/>`).join("")}<line x1="${L[0]}" y1="${cy}" x2="${R[0]}" y2="${cy}" stroke="#fff" stroke-width="2" stroke-dasharray="6 4"/><line x1="${cx}" y1="${T[1]}" x2="${cx}" y2="${Bm[1]}" stroke="#fff" stroke-width="2" stroke-dasharray="6 4"/></svg><div class="center"><button class="btn y" id="f1">① 가로 점선 접기</button><button class="btn y" id="f2">② 세로 점선 접기</button><button class="btn gray" id="f0">펼치기</button></div><div class="msg" id="fm">점선을 따라 접어 봐요!</div><div class="center"><button class="btn g" id="nx">다음 단계 ▶</button></div>`;
+      $("#f1").onclick=()=>{if(sy[1]==1){anim([1,2],sy);f1=1;$("#fm").textContent="위와 아래가 딱 겹쳐요! 👀"}};
+      $("#f2").onclick=()=>{if(sx[0]==1){anim([0,1],sx);f2=1;$("#fm").textContent="왼쪽과 오른쪽도 딱 겹쳐요! 모서리는 ㄴ 모양이에요 📐"}};
+      $("#f0").onclick=()=>{anim([0,1,2,3],sx.fill(1));sx.fill(1);sy.fill(1);f1=f2=0;[0,1,2,3].forEach(i=>$("#q"+i).setAttribute("transform",tr(i)));$("#fm").textContent="펼쳤어요!"};
+      $("#nx").onclick=()=>{if(f1&&f2)stage(1);else $("#fm").textContent="2번 모두 접어 봐요! ✂️"};
+    }else{
+      const poly=V.map(p=>p.join(",")).join(" ");
+      if(n==1){
+        const ang=["#fff","#ff5fa8","#3b8bff"],c=[0,0,0,0];
+        fs.innerHTML=`<div class="big" style="margin-top:0">🎨 <b>크기가 같은 각</b>끼리 같은 색으로 표시해요. 꼭짓점의 동그라미를 눌러 색을 바꿔요.</div><svg viewBox="0 0 300 220" width="330"><polygon points="${poly}" fill="#fff4e0" stroke="#6b4bd6" stroke-width="3"/>${V.map((p,i)=>`<circle id="a${i}" cx="${p[0]+(i==1?-22:i==3?22:0)}" cy="${p[1]+(i==0?24:i==2?-24:0)}" r="15" fill="#fff" stroke="#6b4bd6" stroke-width="3" style="cursor:pointer"/>`).join("")}</svg><div class="center"><button class="btn" id="ck">확인 ✔</button></div>`;
+        V.forEach((p,i)=>$("#a"+i).onclick=()=>{c[i]=(c[i]+1)%3;$("#a"+i).setAttribute("fill",ang[c[i]])});
+        $("#ck").onclick=()=>{if(c[0]&&c[0]==c[2]&&c[1]&&c[1]==c[3]&&c[0]!=c[1]){$("#fb").innerHTML=`<div class="msg">맞아요! 마주 보는 각의 크기가 같아요 ✨</div>`;confetti(25);stage(2)}else fail("마주 보는 두 각을 같은 색으로, 다른 쌍은 다른 색으로 칠해 봐요! 🎨")};
+      }else if(n==2){
+        const k=[0,0,0,0],ed=[[T,R],[R,Bm],[Bm,L],[L,T]];
+        const tick=(i)=>{const [p,q]=ed[i],mx=(p[0]+q[0])/2,my=(p[1]+q[1])/2,dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy),nx=-dy/l*9,ny=dx/l*9,ux=dx/l*5,uy=dy/l*5;let s="";for(let j=0;j<k[i];j++){const o=(j-(k[i]-1)/2)*2;s+=`<line x1="${mx+nx+ux*o}" y1="${my+ny+uy*o}" x2="${mx-nx+ux*o}" y2="${my-ny+uy*o}" stroke="#ff2d6f" stroke-width="3"/>`}return s};
+        const rd=()=>{$("#tk").innerHTML=ed.map((e,i)=>tick(i)).join("")};
+        fs.innerHTML=`<div class="big" style="margin-top:0">📏 <b>길이가 같은 변</b>에는 같은 개수의 표시(|)를 해요. 변을 눌러 표시해 봐요.</div><svg viewBox="0 0 300 220" width="330"><polygon points="${poly}" fill="#e7f6ff"/>${ed.map((e,i)=>`<line id="e${i}" x1="${e[0][0]}" y1="${e[0][1]}" x2="${e[1][0]}" y2="${e[1][1]}" stroke="#6b4bd6" stroke-width="12" stroke-linecap="round" style="cursor:pointer"/>`).join("")}<g id="tk"></g></svg><div class="center"><button class="btn" id="ck">확인 ✔</button></div>`;
+        ed.forEach((e,i)=>$("#e"+i).onclick=()=>{k[i]=(k[i]+1)%3;rd()});
+        $("#ck").onclick=()=>{if(k[0]&&k.every(v=>v==k[0])){$("#fb").innerHTML=`<div class="msg">네 변의 길이가 모두 같아요! 👏</div>`;confetti(25);stage(3)}else fail("마름모는 네 변의 길이가 모두 같아요. 네 변에 같은 표시를 해 봐요! 📏")};
+      }else{
+        const Q=[["마주 보는 두 각의 크기는 ","같습니다","다릅니다"],["마주 보는 꼭짓점끼리 이은 두 선분은 ","수직","평행"],["그 두 선분은 서로를 ","이등분","삼등분"]],sel=[];
+        fs.innerHTML=`<div class="big" style="margin-top:0">✍️ 접어서 알아낸 <b>마름모의 성질</b>을 완성해요!</div>`+Q.map((q,i)=>{const o=shuf([q[1],q[2]]);return `<div class="sent">${q[0]}( ${o.map(w=>`<button class="chip" data-i="${i}" data-w="${w}">${w}</button>`).join(" / ")} )${i==1?"(으)로 만나요.":i==2?"합니다.":"."}</div>`}).join("")+`<div class="center"><button class="btn" id="ck">완성! ✔</button></div>`;
+        document.querySelectorAll(".chip").forEach(x=>x.onclick=()=>{sel[x.dataset.i]=x.dataset.w;document.querySelectorAll(`.chip[data-i="${x.dataset.i}"]`).forEach(y=>y.classList.toggle("on",y==x))});
+        $("#ck").onclick=()=>{if(Q.every((q,i)=>sel[i]==q[1]))win(tries==0,EX,15);else fail("접은 모습을 다시 떠올려 봐요! 🤔")};
+      }
+    }
+  }
+  draw();
+}
+
+/* ---------- 캐릭터깡 ---------- */
+function gacha(){
+  $("#main").innerHTML=`<div class="card center"><h2>🎁 랜덤 캐릭터깡</h2><div class="big">30🪙으로 캐릭터를 뽑아요!<br><small>⚪ 일반 · 🔵 희귀 · 🌈 전설</small></div><div style="font-size:100px">🥚</div><button class="btn y" onclick="pull()">🎰 뽑기! (30🪙)</button><div class="msg" id="gm"></div></div>`;
+}
+function pull(){
+  if(S.coin<30){$("#gm").textContent="코인이 부족해요! 문제를 풀어 모아 봐요 📝";return}
+  S.coin-=30;save();head();
+  $("#main").innerHTML=`<div class="card center"><div class="egg">🥚</div><div class="big">두근두근...</div></div>`;
+  setTimeout(()=>{
+    const r=Math.random(),rar=r<.1?2:r<.4?1:0,c=pick(CH.filter(x=>x[2]==rar));
+    S.own[c[0]]=(S.own[c[0]]||0)+1;save();head();confetti(rar==2?90:45);
+    $("#main").innerHTML=`<div class="card center"><div class="reveal">${c[0]}</div><h2>${c[1]} <span class="rare r${rar}">${["일반","희귀","전설"][rar]}</span></h2><div class="msg">${S.own[c[0]]>1?`또 만났어요! ⭐x${S.own[c[0]]}`:"새 친구가 생겼어요! 🎉"}</div><button class="btn y" onclick="pull()">한 번 더! (30🪙)</button><button class="btn gray" onclick="S.hero='${c[0]}';go('pet')">이 친구 키우기 🐾</button></div>`;
+  },1400);
+}
+/* ---------- 상점 ---------- */
+function shop(msg){
+  let h=`<div class="card"><h2>🏪 마름모 상점</h2><div class="big">음식을 사서 캐릭터를 먹이면 쑥쑥 자라요! 옷과 소품도 있어요.</div><b>🍽️ 음식</b><div class="grid3" style="margin:8px 0 14px">`;
+  FOOD.forEach(f=>{h+=`<div class="item"><div class="em">${f[0]}</div><small>${f[1]} · 성장 +${f[3]} · 보유 ${S.food[f[0]]||0}</small><button class="btn y s" onclick="buyF('${f[0]}',${f[2]})">🪙${f[2]}</button></div>`});
+  h+=`</div><b>👗 옷 · 소품</b><div class="grid3" style="margin-top:8px">`;
+  CLOTH.forEach(c=>{const own=S.cloth.includes(c[1]);h+=`<div class="item"><div class="em">${c[1]}</div><small>${c[2]} (${{head:"머리",face:"얼굴",hand:"손"}[c[0]]})</small>${own?`<div class="msg" style="min-height:0">보유중 ✅</div>`:`<button class="btn y s" onclick="buyC('${c[1]}',${c[3]})">🪙${c[3]}</button>`}</div>`});
+  $("#main").innerHTML=h+`</div><div class="msg">${msg||""}</div></div>`;
+}
+function buyF(f,p){if(S.coin<p)return shop("코인이 부족해요 😢");S.coin-=p;S.food[f]=(S.food[f]||0)+1;save();head();confetti(15,[f]);shop(f+" 구매 완료! 내 캐릭터에게 먹여 봐요 🐾")}
+function buyC(c,p){if(S.coin<p)return shop("코인이 부족해요 😢");S.coin-=p;S.cloth.push(c);save();head();confetti(25,[c,"✨"]);shop(c+" 구매 완료! 내 캐릭터에게 입혀 봐요 🐾")}
+/* ---------- 내 캐릭터 ---------- */
+function stageOf(x){let s=0;STAGE.forEach((t,i)=>{if(x>=t[0])s=i});return s}
+function pet(msg){
+  const x=xp(),s=stageOf(x),nxt=STAGE[s+1],px=60+Math.min(x,100)*1.5;
+  const per=nxt?((x-STAGE[s][0])/(nxt[0]-STAGE[s][0])*100):100;
+  let h=`<div class="card"><div class="petbox"><div id="pt" style="font-size:${px}px">${petHTML(px)}</div><h2 style="margin-top:14px">${STAGE[s][1]} 단계 · 성장 ${x}</h2><div class="bar"><div style="width:${per}%"></div></div><div class="msg">${msg||(nxt?`다음 단계까지 ${nxt[0]-x}!`:"전설이 되었어요! 👑")}</div></div>`;
+  h+=`<b>🍽️ 먹이 주기</b><div class="grid3" style="margin:8px 0 12px">`;
+  FOOD.forEach(f=>{const n=S.food[f[0]]||0;h+=`<div class="item" style="${n?"":"opacity:.45"}"><div class="em">${f[0]}</div><small>x${n}</small>${n?`<button class="btn g s" onclick="feed('${f[0]}',${f[3]})">냠냠!</button>`:""}</div>`});
+  h+=`</div><b>👗 옷 입히기</b><div class="grid3" style="margin:8px 0 12px">`;
+  if(!S.cloth.length)h+=`<div class="msg" style="grid-column:1/4">상점에서 옷을 사 봐요!</div>`;
+  S.cloth.forEach(c=>{const k=CLOTH.find(z=>z[1]==c)[0],on=S.wear[k]==c;h+=`<div class="item"><div class="em">${c}</div><button class="btn ${on?"gray":"y"} s" onclick="wear('${k}','${c}')">${on?"벗기":"입기"}</button></div>`});
+  h+=`</div><b>📖 내 친구들 (${Object.keys(S.own).length}/${CH.length})</b><div class="grid3" style="margin-top:8px">`;
+  CH.forEach(c=>{const n=S.own[c[0]];h+=`<div class="item" ${n?`onclick="S.hero='${c[0]}';save();head();pet()" style="cursor:pointer;${S.hero==c[0]?"outline:3px solid #ff5fa8":""}"`:`style="opacity:.4"`}><div class="em">${n?c[0]:"❓"}</div><small>${n?c[1]+" x"+n:"???"}</small><span class="rare r${c[2]}">${["일반","희귀","전설"][c[2]]}</span></div>`});
+  $("#main").innerHTML=h+`</div></div>`;
+}
+function feed(f,g){
+  if(!S.food[f])return;const before=stageOf(xp());S.food[f]--;S.xp[S.hero]=xp()+g;save();confetti(14,[f,"💖"]);
+  const up=stageOf(xp())>before;if(up)confetti(80);
+  pet(up?`🎉 ${STAGE[stageOf(xp())][1]} 단계로 성장했어요!`:"냠냠! 맛있다! 😋");
+  const e=$("#pt");if(e)e.classList.add("bounce");
+}
+function wear(k,c){S.wear[k]=S.wear[k]==c?null:c;save();head();pet()}
+nav();head();go(S.tab==="pet"?"pet":"quiz");
+</script>
+</body>
+</html>
